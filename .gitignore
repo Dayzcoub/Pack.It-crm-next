@@ -1,0 +1,44 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.*
+
+# Build output (framework-agnostic — covers Next.js/Vite/tsc/turbo/etc.)
+dist/
+build/
+out/
+.next/
+.turbo/
+.vite/
+*.tsbuildinfo
+
+# Env & secrets (never commit)
+.env
+.env.*
+!.env.example
+*.pem
+
+# Test / coverage
+coverage/
+test-results/
+playwright-report/
+.nyc_output/
+
+# Caches & logs
+.cache/
+.tmp/
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor / OS
+.DS_Store
+.idea/
+*.swp
+
+# Claude Code — keep shared settings.json, ignore personal/local
+.claude/settings.local.json
+.claude/worktrees/
+graphify-out/
