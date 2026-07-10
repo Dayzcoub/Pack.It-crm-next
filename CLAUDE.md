@@ -42,6 +42,8 @@ Also read the matching project skills in `.claude/skills/*/SKILL.md`:
 - `.claude/skills/packit-security-and-permissions/SKILL.md` — auth, roles, tenant scoping, PII/pricing visibility, audit.
 - `.claude/skills/packit-dev-discipline/SKILL.md` — modular architecture, donor-app discipline, dependency/code hygiene.
 
+Also read `AGENTS.md`; it is the shared instruction source for Codex, Claude Code and any other coding agent.
+
 ## Architecture principle (non-negotiable)
 
 Modular, **not a monolith**. Intended shape (`docs/01_SYSTEM_ARCHITECTURE.md` §6):
@@ -81,12 +83,18 @@ PACK.IT should not copy any one of them. It should connect these worlds into one
 ## Toolkit available on this machine
 
 - **graphify** (`/graphify .`) — map the codebase as a dependency graph once code exists; use it to catch coupling/god-modules early.
-- **ponytail** (`/ponytail`, `/ponytail-review`, `/ponytail-audit`) — enforce minimal code; audit for over-engineering. Reach for stdlib/native before deps.
-- **ui-ux-pro-max** — design-system / UI guidance for the `ui-*` packages.
-- **Anthropic-Cybersecurity-Skills** at `~/Anthropic-Cybersecurity-Skills/` — reference library (MITRE/NIST/D3FEND-mapped) for authz patterns, PII protection, log threat-hunting. Grep it for the relevant `skills/*/SKILL.md` when working on auth, permissions, or handling customer data.
+- **ponytail** (`/ponytail`, `/ponytail-review`, `/ponytail-audit`, `/ponytail-debt`) — enforce minimal code; audit for over-engineering; track intentional `ponytail:` shortcuts. Reach for stdlib/native before deps.
+- **ui-ux-pro-max** — design intelligence for Claude Code; use before implementing or materially changing `ui-*` packages, mobile workflows, dashboards, client preview, tech-pack presentation or design-system tokens.
+- **Anthropic-Cybersecurity-Skills** at `~/Anthropic-Cybersecurity-Skills/` — cybersecurity skills library mapped to MITRE/NIST/D3FEND/ATLAS/AI RMF/F3. Use for defensive authz, PII, tenant isolation, API security, audit logging, supply-chain security and incident-response-minded design only.
+
+## External skill pack rules
+
+If UI/UX Pro Max is available, consult it for UI work. If not available, apply `.claude/skills/packit-ui-mobile/SKILL.md` and the UI section of `AGENTS.md` manually.
+
+If Anthropic Cybersecurity Skills is available, consult relevant `skills/*/SKILL.md` files for security-sensitive work. Use the library only for lawful defensive design, hardening, secure review, threat modeling and incident response. Do not use it to add exploit, phishing, malware, persistence, stealth, evasion or unauthorized testing capability to PACK.IT.
 
 ## Conventions
 
-- Docs and project skills are the source of truth; if code and docs disagree, flag it.
+- Docs, project skills and `AGENTS.md` are the source of truth; if code and docs disagree, flag it.
 - Commit style: linear history on `main`; `gh` is authenticated for this repo.
 - Do not create stack/framework scaffolding until the stack decision is documented.
