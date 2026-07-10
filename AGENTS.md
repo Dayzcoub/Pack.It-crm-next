@@ -36,6 +36,45 @@ Before coding a domain, read the relevant docs and skills:
 
 Docs and skills are the source of truth. If code and docs disagree, stop and flag it.
 
+## External skill packs
+
+This repo may be used by agents with external skill packs installed. Treat these as shared quality gates, not optional decoration.
+
+### Ponytail
+
+Use Ponytail discipline for all implementation work. If Claude Code has the Ponytail plugin installed, use `/ponytail`, `/ponytail-review`, `/ponytail-audit` and `/ponytail-debt` where appropriate. If the agent cannot invoke the plugin, apply the same discipline manually from this file.
+
+### UI/UX Pro Max
+
+Use UI/UX Pro Max guidance for user-facing work:
+
+- design system decisions;
+- layout and information architecture;
+- responsive behavior;
+- desktop vs mobile workflows;
+- accessibility basics;
+- visual hierarchy, spacing, typography and interaction states;
+- role-specific PACK.IT screens;
+- client preview and tech-pack presentation surfaces.
+
+If the `ui-ux-pro-max` skill/tool is available in the local agent environment, consult it before implementing or materially changing UI. If it is not available, apply the principles in `.claude/skills/packit-ui-mobile/SKILL.md` manually and keep UI changes small, consistent and token/design-system based.
+
+### Anthropic Cybersecurity Skills
+
+Use Anthropic Cybersecurity Skills as a security reference library for:
+
+- auth and authorization design;
+- role/capability modeling;
+- tenant/workspace separation;
+- API and web application security;
+- secrets handling;
+- audit logging;
+- incident-response-minded logging and monitoring;
+- supply-chain/dependency security;
+- AI/agentic security risks if PACK.IT adds AI workflows.
+
+This library includes dual-use/offensive techniques. In PACK.IT, use it for lawful defensive design, hardening, secure review, threat modeling and incident response only. Do not use it to add exploitation, phishing, malware, evasion or unauthorized testing capability to the product.
+
 ## Ponytail development discipline
 
 All coding agents must follow Ponytail-style development rules.
@@ -61,6 +100,41 @@ Do not remove or skip:
 - tests for business-critical domain rules.
 
 Ponytail does **not** mean careless code. It means minimal, direct, maintainable code.
+
+## UI/UX discipline
+
+All user-facing work must follow UI/UX Pro Max style discipline even when the external tool is unavailable.
+
+Before adding or changing UI, identify:
+
+1. user role;
+2. workflow context: desktop planning, mobile field work, warehouse scanning, client preview, admin, or reporting;
+3. primary action on the screen;
+4. data that must be visible;
+5. data that must be hidden by role/permission;
+6. empty/loading/error/deficit states;
+7. keyboard/touch/accessibility requirements.
+
+PACK.IT mobile is not desktop CRM scaled down. Mobile is for field execution, scanning, task completion, project context, communication and quick confirmations.
+
+Prefer:
+
+- shared design tokens;
+- reusable components;
+- clear hierarchy;
+- visible operational states;
+- large touch targets on mobile;
+- role-specific surfaces;
+- progressive disclosure for dense project data.
+
+Avoid:
+
+- huge all-in-one screens;
+- desktop tables squeezed onto phones;
+- UI-only status without domain state;
+- colors without labels/actions;
+- CSS hacks and `!important` arms races;
+- one generic dashboard for all roles.
 
 ## Architecture rules
 
@@ -148,6 +222,21 @@ Requirements:
 - log privileged and commercially sensitive actions;
 - never expose internal prices, margins, warehouse data or staff-private data to client previews unless explicitly intended.
 
+Before implementing a security-sensitive feature, consult `.claude/skills/packit-security-and-permissions/SKILL.md` and, if available, the relevant Anthropic Cybersecurity Skills references for the domain.
+
+## Cybersecurity safety boundaries
+
+When using cybersecurity skills or references:
+
+- stay defensive and product-protective;
+- do not run scans/tests against systems without explicit authorization;
+- do not add exploit, phishing, malware, persistence, stealth or evasion workflows to PACK.IT;
+- do not embed offensive payloads, credential theft logic or bypass logic;
+- do not expose secret values in logs, tests, fixtures, screenshots or generated docs;
+- treat AI/agent integrations as a security boundary: prompt injection, tool abuse, data exfiltration and permission escalation must be considered.
+
+For security work, prefer threat modeling, access-control tests, safe validation, secure defaults and auditability over cleverness.
+
 ## Testing expectations
 
 When code exists, prioritize tests for:
@@ -160,7 +249,9 @@ When code exists, prioritize tests for:
 - permission boundaries;
 - document generation from source data;
 - scene-to-BOM traceability;
-- mobile field workflow state changes.
+- mobile field workflow state changes;
+- client-preview data redaction;
+- audit-log creation for sensitive actions.
 
 Do not rely only on component snapshots for business-critical logic.
 
@@ -169,6 +260,7 @@ Do not rely only on component snapshots for business-critical logic.
 For each implementation task, briefly identify:
 
 - which domain docs/skills were read;
+- whether Ponytail, UI/UX Pro Max or cybersecurity guidance was relevant;
 - source of truth data model;
 - smallest viable change;
 - tests or checks run;
