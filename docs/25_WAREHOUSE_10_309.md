@@ -1,17 +1,22 @@
-# 25 Warehouse 10.309
+# 25 Shortages 10.309
 
 Decision: the `Transferred from assigned user's proposal` label disappears after the confirmer first edits the transferred comment.
+
+Architecture binding:
+- the label belongs only to the client-side draft form;
+- editing the draft does not change the original proposal in `shortages`;
+- only a successful `shortages.resolve` submission creates a new domain-history event.
 
 Behavior:
 - the label is shown only while the copied comment remains unchanged from the original proposal;
 - the first manual edit removes the source label;
 - after the label disappears, the text behaves like an ordinary comment draft;
 - deleting the text also removes the label;
-- the original proposal and its original comment remain unchanged in history.
+- the original proposal and its original comment remain unchanged in shortage domain history.
 
 MVP:
 - the form detects the first meaningful edit to the transferred comment;
 - the source label is removed immediately after that edit;
 - the label does not remain on a modified comment;
 - the final action stores only the final submitted comment;
-- the action remains a separate final action, not proposal acceptance.
+- the action remains a separate `shortages.resolve` action, not proposal acceptance.
