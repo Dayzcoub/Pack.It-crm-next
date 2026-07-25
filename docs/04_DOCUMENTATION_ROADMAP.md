@@ -16,12 +16,15 @@
 - как защищаются данные;
 - как приложение будет развиваться по этапам.
 
-## 2. Уже созданные документы
+## 2. Уже созданные базовые документы
 
 - `00_PRODUCT_PRINCIPLES.md` — продуктовые принципы.
 - `01_SYSTEM_ARCHITECTURE.md` — верхнеуровневая архитектура.
 - `02_PROJECT_QUOTE_DOMAIN.md` — модель проекта/сметы.
 - `03_ADMIN_ROLES_ACCESS.md` — системная админка, роли и доступы.
+- `09_BACKEND_DATA_ARCHITECTURE.md` — техническая база модульного монолита, shared contracts, backend/data, frontend-границы, realtime, workers, CI и architecture checks.
+
+Документ `09_BACKEND_DATA_ARCHITECTURE.md` фиксирует направление, но оставляет открытыми конкретные ADR по runtime/framework, ORM, auth, PostgreSQL version/ID strategy, multi-tenancy, RLS и production provider.
 
 ## 3. Следующие документы
 
@@ -108,27 +111,31 @@ docs/08_UI_UX_PRINCIPLES.md
 - проектный workflow;
 - навигацию;
 - роли и видимость экранов;
-- принципы дизайн-системы.
+- принципы дизайн-системы;
+- разделение внутренней CRM и публичного website.
 
-### 3.5. Backend и данные
+### 3.5. Технические ADR
 
-Файл:
+После архитектурной базы нужны отдельные решения:
 
 ```text
-docs/09_BACKEND_DATA_ARCHITECTURE.md
+docs/adr/ADR-001_RUNTIME_BACKEND_FRAMEWORK.md
+docs/adr/ADR-002_DATABASE_ORM_IDS.md
+docs/adr/ADR-003_AUTH_SESSIONS.md
+docs/adr/ADR-004_MULTI_TENANCY_RLS.md
+docs/adr/ADR-005_FRONTEND_RENDERING.md
+docs/adr/ADR-006_PRODUCTION_DEPLOYMENT.md
 ```
 
-Нужно описать:
+Каждый ADR должен содержать:
 
-- выбранный backend;
-- базы данных;
-- таблицы;
-- RLS;
-- API;
-- Edge Functions / серверные функции;
-- controlled writes;
-- offline sync;
-- безопасность.
+- контекст;
+- требования PACK.IT;
+- рассмотренные варианты;
+- принятое решение;
+- последствия;
+- rejected alternatives;
+- критерии пересмотра.
 
 ### 3.6. Этапы разработки
 
@@ -147,7 +154,8 @@ docs/10_DEVELOPMENT_PHASES.md
 - 1.0.0;
 - какие модули входят в каждый этап;
 - что нельзя делать раньше времени;
-- какие проверки нужны перед переходом этапа.
+- какие проверки нужны перед переходом этапа;
+- когда bootstrap-репозитория и `architecture:check` считаются завершёнными.
 
 ### 3.7. Legacy donor map
 
@@ -168,6 +176,26 @@ docs/11_LEGACY_DONOR_MAP.md
 
 Важно: в новом продукте не используется старый бренд. Старое приложение описывается только как технический источник логики.
 
+### 3.8. Безопасность и эксплуатация
+
+Нужны отдельные документы:
+
+```text
+docs/12_SECURITY_THREAT_MODEL.md
+docs/13_DATA_RETENTION_PRIVACY.md
+docs/14_OBSERVABILITY_AUDIT.md
+docs/15_BACKUP_RESTORE_DR.md
+```
+
+Особое внимание:
+
+- персональные данные и требования ФЗ/РКН;
+- границы E2EE для личных и групповых чатов;
+- секреты;
+- загрузки файлов;
+- административные действия;
+- проверяемый backup/restore.
+
 ## 4. Правило именования документов
 
 Документы нумеруются по смысловому порядку:
@@ -179,6 +207,8 @@ docs/11_LEGACY_DONOR_MAP.md
 ```
 
 Номер не означает версию. Версии продукта должны идти отдельно.
+
+ADR хранятся в `docs/adr/` и имеют собственную последовательную нумерацию.
 
 ## 5. Правило изменения документов
 
@@ -198,12 +228,11 @@ Rejected Alternatives
 
 ## 6. Ближайший приоритет
 
-Ближайший приоритет документации:
-
 ```text
-1. Склад и резервы
-2. Опциональный 3D-конструктор
-3. Документы и PDF
-4. UI/UX mobile + desktop
-5. Backend/data architecture
+1. Завершить доменные документы склада/резервов/дефицитов
+2. Уточнить optional 3D и документы/PDF
+3. Зафиксировать UI/UX и границу web/website
+4. Принять ADR по runtime, DB/ORM, auth и multi-tenancy
+5. Подготовить development phases и bootstrap plan
+6. Реализовать architecture:check до появления большого объёма кода
 ```
