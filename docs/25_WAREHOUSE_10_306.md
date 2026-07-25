@@ -1,6 +1,11 @@
-# 25 Warehouse 10.306
+# 25 Shortages 10.306
 
 Decision: if the confirmer has already changed data in the `Accept proposal` form, clicking `Choose another result` requires a confirmation warning before those changes are discarded.
+
+Architecture binding:
+- this is a client-side transition from `shortages.accept_proposal` to a separate action governed by `shortages.resolve`;
+- no shortage state changes until a server use case is submitted successfully;
+- the warning protects only unsaved form state.
 
 Behavior:
 - if the acceptance form still matches the original proposal, `Choose another result` opens the normal shortage action without an extra warning;
@@ -14,4 +19,5 @@ MVP:
 - the confirmation offers clear continue and cancel actions;
 - continuing discards all acceptance-form changes, including the adjustment reason;
 - cancelling preserves the current form state;
-- the original proposal remains unchanged and visible in history.
+- the original proposal remains unchanged in shortage domain history;
+- opening the separate action does not imply authorization to submit it.
