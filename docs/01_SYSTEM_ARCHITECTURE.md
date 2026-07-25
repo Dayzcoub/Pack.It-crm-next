@@ -184,18 +184,22 @@ BOM может формироваться из ручных разделов и�
 
 ## 4. Принцип модульности
 
-Каждый модуль должен иметь понятный контракт.
+PACK.IT строится как модульный монолит с progressive DDD-lite: одна backend-кодовая база и одна основная PostgreSQL на старте, но с явными продуктовыми контекстами, владельцами данных и направлением зависимостей.
 
-Запрещено строить приложение так, чтобы UI напрямую управлял складом, документами, резервами и расчётами без доменного слоя.
+Каждый модуль должен иметь понятный контракт и единственную публичную границу.
+
+Запрещено строить приложение так, чтобы UI напрямую управлял складом, документами, резервами и расчётами без application/domain слоя.
 
 Правильная схема:
 
 ```text
 UI
-→ Application Service
-→ Domain Logic
-→ Data Adapter
-→ Storage / Backend
+→ API Contract
+→ Transport
+→ Application Use Case
+→ Domain Logic / Ports
+→ Infrastructure Adapter
+→ PostgreSQL / External Provider
 ```
 
 Неправильная схема:
@@ -205,6 +209,8 @@ Button click
 → direct mutation everywhere
 → PDF / warehouse / quote / UI side effects
 ```
+
+Архитектурные границы должны проверяться автоматически командой `architecture:check`, а не существовать только в документации.
 
 ## 5. Главное ограничение
 
@@ -223,31 +229,59 @@ Button click
 → Documents
 ```
 
-## 6. Предварительные пакеты будущего приложения
-
-Возможная структура будущей кодовой базы:
+## 6. Предварительная форма будущей кодовой базы
 
 ```text
+apps/
+  api/
+  web/
+  website/
+  worker/
+  cron/
+
 packages/
-  core-project/
-  core-sections/
-  core-scene/
-  core-stage/
-  core-truss/
-  core-led/
-  core-bom/
-  core-inventory/
-  core-documents/
-  core-admin/
-  core-auth/
-  core-sync/
-  ui-shell/
-  ui-projects/
-  ui-scene-editor/
-  ui-inventory/
-  ui-admin/
-  shared-ui/
-  shared-types/
+  contracts/
+  domain-shared/
+  ui/
+  config/
+
+backend/
+  modules/
+    identity-access/
+    organizations/
+    clients/
+    projects-quotes/
+    sections/
+    bom/
+    inventory/
+    reservations/
+    shortages/
+    subrent/
+    warehouse-operations/
+    team/
+    transport/
+    files/
+    three-d-scene/
+    documents/
+    notifications/
+    chat/
+    audit/
+    settings/
+
+scripts/
+  architecture-check.*
 ```
 
-Эта структура не является финальной, но отражает главный принцип: расчёты, бизнес-логика, интерфейс, склад и документы не должны быть смешаны в одном монолите.
+Эта структура уточняется после выбора стека. Базовые правила уже приняты:
+
+- бизнес-логика не смешивается с HTTP, UI и ORM;
+- чужой модуль используется только через публичную границу;
+- `packages/contracts` хранит внешние DTO и схемы API, но не Prisma-модели;
+- worker, cron, realtime broker и микросервисы вводятся только при подтверждённой необходимости;
+- PostgreSQL остаётся источником истины для критичных данных.
+
+## 7. Детальная техническая база
+
+Подробные правила backend, contracts, данных, realtime, worker/cron, frontend-границ, CI и архитектурных проверок зафиксированы в:
+
+[`09_BACKEND_DATA_ARCHITECTURE.md`](09_BACKEND_DATA_ARCHITECTURE.md)
