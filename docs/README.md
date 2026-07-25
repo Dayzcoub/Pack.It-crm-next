@@ -28,6 +28,21 @@
 - [`02_PROJECT_QUOTE_DOMAIN.md`](02_PROJECT_QUOTE_DOMAIN.md) — доменная модель проекта/сметы.
 - [`03_ADMIN_ROLES_ACCESS.md`](03_ADMIN_ROLES_ACCESS.md) — системная админка, роли, доступы и ключи.
 - [`04_DOCUMENTATION_ROADMAP.md`](04_DOCUMENTATION_ROADMAP.md) — какие документы нужно подготовить дальше.
+- [`09_BACKEND_DATA_ARCHITECTURE.md`](09_BACKEND_DATA_ARCHITECTURE.md) — техническая база модульного монолита, contracts, backend/data, realtime, workers, CI и исполняемые архитектурные границы.
+
+## Принятая техническая база
+
+PACK.IT проектируется как:
+
+```text
+модульный монолит
++ progressive DDD-lite
++ shared API contracts
++ PostgreSQL как источник истины
++ автоматическая architecture check
+```
+
+Конкретный runtime, framework, ORM, auth-provider и production-провайдер пока не выбраны и должны приниматься отдельными ADR.
 
 ## Правило ведения документации
 
