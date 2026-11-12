@@ -32,6 +32,7 @@
 - [`04_DOCUMENTATION_ROADMAP.md`](04_DOCUMENTATION_ROADMAP.md) — какие документы нужно подготовить дальше.
 - [`05_INVENTORY_RESERVATIONS.md`](05_INVENTORY_RESERVATIONS.md) — канонические границы `catalog`, `inventory`, `reservations`, `shortages`, `subrent` и `warehouse-operations`, включая предложения результата по нехватке.
 - [`09_BACKEND_DATA_ARCHITECTURE.md`](09_BACKEND_DATA_ARCHITECTURE.md) — техническая база модульного монолита, contracts, backend/data, realtime, workers, CI и исполняемые архитектурные границы.
+- [`16_QUOTE_LIFECYCLE_RESERVATIONS.md`](16_QUOTE_LIFECYCLE_RESERVATIONS.md) — исследование RentRoute: жизненный цикл смет, варианты, резервы, выдача и проверяемые гипотезы; не утверждённые решения.
 
 Файлы `25_WAREHOUSE_10_xxx.md` являются атомарными decision notes. Их складские термины трактуются через канонические границы `05_INVENTORY_RESERVATIONS.md`.
 
